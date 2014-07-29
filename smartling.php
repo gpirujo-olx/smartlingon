@@ -5,7 +5,7 @@ include('po.php');
 function init($en) {
     $out = array();
     foreach($en[''] as $msgid => $msgstr) {
-        $out[$msgid][$msgstr] = '""';
+        $out[$msgid][$msgstr] = '';
     }
     return $out;
 }

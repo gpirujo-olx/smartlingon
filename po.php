@@ -17,11 +17,8 @@ function readpo($filename, $limit = -1) {
             continue;
         }
 
-        foreach (array('msgctxt', 'msgid', 'msgstr') as $field) {
-            if (substr($line, 0, $len = strlen($field)) == $field) {
-                $$field = substr($line, $len + 1);
-                continue;
-            }
+        if (preg_match('/(msg(?:ctxt|id|str)) "(.*)"\s*$/', $line, $matches)) {
+            ${$matches[1]} = stripslashes($matches[2]);
         }
 
     }
@@ -30,9 +27,9 @@ function readpo($filename, $limit = -1) {
 
 function writepo($strings) {
     foreach ($strings as $msgctxt => $msgids) {
-        if (!empty($msgctxt)) printf("msgctxt %s\n", $msgctxt);
+        if (!empty($msgctxt)) printf("msgctxt \"%s\"\n", addslashes($msgctxt));
         foreach ($msgids as $msgid => $msgstr) {
-            printf("msgid %s\nmsgstr %s\n\n", $msgid, $msgstr);
+            printf("msgid \"%s\"\nmsgstr \"%s\"\n\n", addslashes($msgid), addslashes($msgstr));
         }
     }
 }
